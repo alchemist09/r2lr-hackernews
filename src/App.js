@@ -34,9 +34,11 @@ class App extends Component {
     super(props);
     this.state = {
       list,
-      projectName: "Hacker News"
+      projectName: "Hacker News",
+      searchTerm: ''
     };
     this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   onDismiss(id) {
@@ -51,6 +53,13 @@ class App extends Component {
     this.setState({ projectName: nameOfProject });
   }
 
+  onSearchChange(event) {
+    // const searchTerm = event.target.value;
+    // const updatedList = this.state.list.filter(item => item.title.indexOf(searchTerm) !== -1);
+    // this.setState({ list: updatedList });
+    this.setState({ searchTerm: event.target.value });
+  }
+
   render() {
     return (
       <div className="App">
@@ -59,8 +68,15 @@ class App extends Component {
           <button type="button"
                   onClick={() => this.toggleProjectName()}>Toggle Case</button>
         </h2>
+
+        <form>
+          <input type="text"
+                 onChange={ this.onSearchChange } 
+          />
+        </form>
         {
-          this.state.list.map(item => 
+          this.state.list.filter(item => item.title.toLowerCase().indexOf(this.state.searchTerm) !== -1)
+              .map(item => 
             <div key={item.objectID}>
                 <span><a href={item.url}>{item.title}</a></span>
                 <span>{item.author}</span>
