@@ -28,11 +28,7 @@ const list = [
   }
 ]
 
-function isSearched(searchTerm) {
-  return function(item) {
-    return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  }
-}
+const isSearched = searchTerm => item => !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class App extends Component {
 
@@ -60,9 +56,6 @@ class App extends Component {
   }
 
   onSearchChange(event) {
-    // const searchTerm = event.target.value;
-    // const updatedList = this.state.list.filter(item => item.title.indexOf(searchTerm) !== -1);
-    // this.setState({ list: updatedList });
     this.setState({ searchTerm: event.target.value });
   }
 
