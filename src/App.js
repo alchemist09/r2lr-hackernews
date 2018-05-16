@@ -28,6 +28,12 @@ const list = [
   }
 ]
 
+function isSearched(searchTerm) {
+  return function(item) {
+    return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -75,8 +81,7 @@ class App extends Component {
           />
         </form>
         {
-          this.state.list.filter(item => item.title.toLowerCase().indexOf(this.state.searchTerm) !== -1)
-              .map(item => 
+          this.state.list.filter(isSearched(this.state.searchTerm)).map(item => 
             <div key={item.objectID}>
                 <span><a href={item.url}>{item.title}</a></span>
                 <span>{item.author}</span>
