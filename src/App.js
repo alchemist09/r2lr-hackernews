@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import './App.css';
 
 const DEFAULT_QUERY = 'redux';
+const DEFAULT_PAGE = 0;
 
 const PATH_BASE     = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH   = '/search';
 const PARAM_SEARCH  = 'query=';
+const PARAM_PAGE    = 'page=';
 
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}${DEFAULT_PAGE}`;
 console.log(url);
 
 // const isSearched = searchTerm => item => !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -53,8 +55,8 @@ class App extends Component {
     this.setState({ result });
   }
 
-  fetchSearchTopstories(searchTerm) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopstories(searchTerm, page) {
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
       .then(response => response.json())
       .then(result => this.setSearchTopstories(result))
       .catch(e => e);
@@ -62,26 +64,26 @@ class App extends Component {
 
   componentDidMount() {
     const { searchTerm } = this.state;
-    this.fetchSearchTopstories(searchTerm);
+    this.fetchSearchTopstories(searchTerm, DEFAULT_PAGE);
   }
 
   onSearchSubmit(event) {
     const { searchTerm } = this.state;
-    this.fetchSearchTopstories(searchTerm);
+    this.fetchSearchTopstories(searchTerm, DEFAULT_PAGE);
     event.preventDefault();
   }
 
   render() {
     const { projectName, searchTerm, result } = this.state;
-    if(!result) return null;
+    const page = (result && result.page) || 0;
     console.log(this.state);
 
     return (
       <div className="page">
         <h2>
           {projectName} 
-          <button type="button"
-                  onClick={() => this.toggleProjectName()}>Toggle Case</button>
+          <Button 
+            onClick={() => this.toggleProjectName()}>Toggle Case</Button>
         </h2>
         <div className="interactions">
           <Search
@@ -91,6 +93,10 @@ class App extends Component {
           >
             Search
           </Search>
+          <Button 
+            onClick={() => this.fetchSearchTopstories(searchTerm, page + 1)}>
+              More
+          </Button>
         </div>
         { result &&
         <Table
@@ -111,7 +117,7 @@ const Search = ({value, onChange, onSubmit, children}) =>
       onChange={onChange}
       onSubmit={onSubmit}
     />
-    <button type="submit">{children}</button>
+    <Button type="submit">{children}</Button>
   </form>
 
 const largeColumn = { width: '40%' }
@@ -147,11 +153,10 @@ const Table = ({list, onDismiss}) =>
     }
   </div>
 
-const Button = ({onClick, className = '', children}) =>
+const Button = ({onClick, className = '', type='button', children}) =>
   <button
    onClick={onClick}
    className={className}
-   type="button"
   >
     {children}
   </button>
