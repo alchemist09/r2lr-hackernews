@@ -10,7 +10,7 @@ const PARAM_SEARCH  = 'query=';
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 console.log(url);
 
-const isSearched = searchTerm => item => !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+// const isSearched = searchTerm => item => !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class App extends Component {
 
@@ -27,6 +27,7 @@ class App extends Component {
     this.toggleProjectName = this.toggleProjectName.bind(this);
     this.setSearchTopstories = this.setSearchTopstories.bind(this);
     this.fetchSearchTopstories = this.fetchSearchTopstories.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
   }
 
   toggleProjectName() {
@@ -64,6 +65,12 @@ class App extends Component {
     this.fetchSearchTopstories(searchTerm);
   }
 
+  onSearchSubmit(event) {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopstories(searchTerm);
+    event.preventDefault();
+  }
+
   render() {
     const { projectName, searchTerm, result } = this.state;
     if(!result) return null;
@@ -80,6 +87,7 @@ class App extends Component {
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
+            onSubmit={this.onSearchSubmit}
           >
             Search
           </Search>
@@ -87,7 +95,6 @@ class App extends Component {
         { result &&
         <Table
           list={result.hits}
-          pattern={searchTerm}
           onDismiss={this.onDismiss}
         /> 
         }
@@ -96,24 +103,25 @@ class App extends Component {
   }
 }
 
-const Search = ({value, onChange, children}) => 
-  <form>
-    {children}
+const Search = ({value, onChange, onSubmit, children}) => 
+  <form onSubmit={onSubmit}>
     <input
       type="text"
       value={value}
       onChange={onChange}
+      onSubmit={onSubmit}
     />
+    <button type="submit">{children}</button>
   </form>
 
 const largeColumn = { width: '40%' }
 const midColumn = { width: '30%' }
 const smallColumn = { width: '10%' }
 
-const Table = ({list, pattern, onDismiss}) =>
+const Table = ({list, onDismiss}) =>
   <div className="table">
     {
-      list.filter(isSearched(pattern)).map(item => 
+      list.map(item => 
         <div key={item.objectID} className="table-row">
           <span style={largeColumn}>
             <a href={item.url}>{item.title}</a>
