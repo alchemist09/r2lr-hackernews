@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import './App.css';
-
-const DEFAULT_QUERY = 'redux';
-const DEFAULT_PAGE = 0;
-
-const PATH_BASE     = 'https://hn.algolia.com/api/v1';
-const PATH_SEARCH   = '/search';
-const PARAM_SEARCH  = 'query=';
-const PARAM_PAGE    = 'page=';
-
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}${DEFAULT_PAGE}`;
-console.log(url);
-
-// const isSearched = searchTerm => item => !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+import { 
+  DEFAULT_QUERY,
+  DEFAULT_PAGE,
+  PATH_BASE,
+  PATH_SEARCH,
+  PARAM_SEARCH,
+  PARAM_PAGE
+}                   from '../../constants';
+import { Search }   from '../Search';
+import { Table }    from '../Table';
+import { Button }   from '../Button';
+import './index.css';
 
 class App extends Component {
 
@@ -132,56 +130,5 @@ class App extends Component {
   }
 }
 
-const Search = ({value, onChange, onSubmit, children}) => 
-  <form onSubmit={onSubmit}>
-    <input
-      type="text"
-      value={value}
-      onChange={onChange}
-      onSubmit={onSubmit}
-    />
-    <Button type="submit">{children}</Button>
-  </form>
-
-const largeColumn = { width: '40%' }
-const midColumn = { width: '30%' }
-const smallColumn = { width: '10%' }
-
-const Table = ({list, onDismiss}) =>
-  <div className="table">
-    {
-      list.map(item => 
-        <div key={item.objectID} className="table-row">
-          <span style={largeColumn}>
-            <a href={item.url}>{item.title}</a>
-          </span>
-          <span style={midColumn}>{
-            item.author}
-          </span>
-          <span style={smallColumn}>
-            {item.num_comments}
-          </span>
-          <span style={smallColumn}>
-            {item.points}
-          </span>
-          <span>
-            <Button onClick={() => onDismiss(item.objectID)}
-                    className="button-inline"
-            >
-              Dismiss
-            </Button>
-          </span>
-        </div>
-      )
-    }
-  </div>
-
-const Button = ({onClick, className = '', type='button', children}) =>
-  <button
-   onClick={onClick}
-   className={className}
-  >
-    {children}
-  </button>
-
 export default App;
+
