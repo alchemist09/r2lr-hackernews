@@ -13,5 +13,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.3.2"
   }
 }
