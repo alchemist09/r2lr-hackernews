@@ -21,6 +21,7 @@ class App extends Component {
       results: null,
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
+      isLoading: false
     };    
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -65,11 +66,13 @@ class App extends Component {
       results: {
         ...results,
         [searchKey]:  { hits: updatedHits, page }
-      }
+      },
+      isLoading: false
     });
   }
 
   fetchSearchTopstories(searchTerm, page) {
+    this.setState({ isLoading: true });
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
       .then(response => response.json())
       .then(result => this.setSearchTopstories(result))
@@ -96,10 +99,11 @@ class App extends Component {
   }
 
   render() {
-    const { projectName, searchTerm, results, searchKey } = this.state;
+    const { projectName, searchTerm, results, searchKey, isLoading } = this.state;
     const page = (results && results[searchKey] && results[searchKey].page) || 0;
     const list = (results && results[searchKey] && results[searchKey].hits) || [];
     console.log(this.state);
+    console.log(isLoading);
 
     return (
       <div className="page">
@@ -116,10 +120,13 @@ class App extends Component {
           >
             Search
           </Search>
-          <Button 
-            onClick={() => this.fetchSearchTopstories(searchKey, page + 1)}>
-              More
-          </Button>
+          { 
+            isLoading ? <Loading /> :
+            <Button 
+              onClick={() => this.fetchSearchTopstories(searchKey, page + 1)}>
+                More
+            </Button>
+          }
         </div>
         <Table
           list={list}
@@ -129,6 +136,10 @@ class App extends Component {
     );
   }
 }
+
+const Loading = () => 
+  <div>Loading....</div>
+
 
 export default App;
 
