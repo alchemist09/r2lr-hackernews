@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import { 
   DEFAULT_QUERY,
   DEFAULT_PAGE,
@@ -138,7 +141,9 @@ class App extends Component {
 }
 
 const Loading = () => 
-  <div>Loading....</div>
+  <div>
+    <FontAwesomeIcon icon={faSpinner} />
+  </div>
 
 
 export default App;
