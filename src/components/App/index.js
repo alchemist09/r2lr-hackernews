@@ -124,11 +124,16 @@ class App extends Component {
             Search
           </Search>
           { 
-            isLoading ? <Loading /> :
-            <Button 
+            // isLoading ? <Loading /> :
+            // <Button 
+            //   onClick={() => this.fetchSearchTopstories(searchKey, page + 1)}>
+            //     More
+            // </Button>
+            <ButtonWihLoading
+              isLoading={isLoading}
               onClick={() => this.fetchSearchTopstories(searchKey, page + 1)}>
-                More
-            </Button>
+              More
+            </ButtonWihLoading>
           }
         </div>
         <Table
@@ -144,6 +149,11 @@ const Loading = () =>
   <div>
     <FontAwesomeIcon icon={faSpinner} />
   </div>
+
+const withLoading = (Component) => ({isLoading, ...rest}) => 
+  isLoading ? <Loading /> : <Component {...rest} />
+
+const ButtonWihLoading = withLoading(Button);
 
 
 export default App;
