@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { sortBy } from 'lodash';
 
 import { 
   DEFAULT_QUERY,
@@ -14,6 +15,14 @@ import { Search }   from '../Search';
 import { Table }    from '../Table';
 import { Button }   from '../Button';
 import './index.css';
+
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, 'title'),
+  AUTHOR: list => sortBy(list, 'author'),
+  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
+  POINTS: list => sortBy(list, 'points').reverse()
+}
 
 class App extends Component {
 
