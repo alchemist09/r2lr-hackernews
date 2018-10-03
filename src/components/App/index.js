@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { sortBy } from 'lodash';
 
 import { 
   DEFAULT_QUERY,
@@ -16,14 +15,6 @@ import { Table }    from '../Table';
 import { Button }   from '../Button';
 import './index.css';
 
-const SORTS = {
-  NONE: list => list,
-  TITLE: list => sortBy(list, 'title'),
-  AUTHOR: list => sortBy(list, 'author'),
-  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
-  POINTS: list => sortBy(list, 'points').reverse()
-}
-
 class App extends Component {
 
   constructor(props) {
@@ -33,7 +24,8 @@ class App extends Component {
       results: null,
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
-      isLoading: false
+      isLoading: false,
+      sortKey: 'NONE'
     };    
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -43,6 +35,11 @@ class App extends Component {
     this.fetchSearchTopstories = this.fetchSearchTopstories.bind(this);
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
+    this.onSort = this.onSort.bind(this);
+  }
+
+  onSort(sortKey) {
+    this.setState({ sortKey });
   }
 
   toggleProjectName() {
@@ -111,7 +108,7 @@ class App extends Component {
   }
 
   render() {
-    const { projectName, searchTerm, results, searchKey, isLoading } = this.state;
+    const { projectName, searchTerm, results, searchKey, isLoading, sortKey } = this.state;
     const page = (results && results[searchKey] && results[searchKey].page) || 0;
     const list = (results && results[searchKey] && results[searchKey].hits) || [];
     console.log(this.state);
@@ -148,6 +145,8 @@ class App extends Component {
         <Table
           list={list}
           onDismiss={this.onDismiss}
+          sortKey={sortKey}
+          onSort={this.onSort}
         /> 
       </div>
     );
