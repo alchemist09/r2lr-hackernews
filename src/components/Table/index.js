@@ -18,8 +18,11 @@ const largeColumn = { width: '40%' }
 const midColumn = { width: '30%' }
 const smallColumn = { width: '10%' }
 
-export const Table = ({list, onDismiss, sortKey, onSort }) =>
-  <div className="table">
+export const Table = ({list, onDismiss, sortKey, onSort, isSortReverse }) => {
+  const sortedList = SORTS[sortKey](list);
+  const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
+  return (
+    <div className="table">
     <div className="table-header">
       <span style={{ width: '40%' }}>
         <Sort
@@ -54,7 +57,7 @@ export const Table = ({list, onDismiss, sortKey, onSort }) =>
       </span>
     </div>
     {
-      SORTS[sortKey](list).map(item => 
+      reverseSortedList.map(item => 
         <div key={item.objectID} className="table-row">
           <span style={largeColumn}>
             <a href={item.url}>{item.title}</a>
@@ -78,7 +81,11 @@ export const Table = ({list, onDismiss, sortKey, onSort }) =>
         </div>
       )
     }
-  </div>
+    </div>
+  )
+}
+
+  
 
 Table.propTypes = {
   list: PropTypes.arrayOf(
