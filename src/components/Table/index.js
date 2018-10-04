@@ -27,28 +27,32 @@ export const Table = ({list, onDismiss, sortKey, onSort, isSortReverse }) => {
       <span style={{ width: '40%' }}>
         <Sort
           sortKey={'TITLE'}
-          onSort={onSort}>
+          onSort={onSort}
+          activeSortKey={sortKey}>
           Title  
         </Sort>
       </span>
       <span style={{ width: '30%'}}>
         <Sort
           sortKey={'Author'}
-          onSort={onSort}>
+          onSort={onSort}
+          activeSortKey={sortKey}>
           Author  
         </Sort>
       </span>
       <span style={{ width: '10%' }}>
         <Sort
           sortKey={'COMMENTS'}
-          onSort={onSort}>
+          onSort={onSort}
+          activeSortKey={sortKey}>
           Comments  
         </Sort>
       </span>
       <span style={{ width: '10%' }}>
         <Sort
           sortKey={'POINTS'}
-          onSort={onSort}>
+          onSort={onSort}
+          activeSortKey={sortKey}>
           Points
         </Sort>
       </span>
