@@ -34,7 +34,7 @@ export const Table = ({list, onDismiss, sortKey, onSort, isSortReverse }) => {
       </span>
       <span style={{ width: '30%'}}>
         <Sort
-          sortKey={'Author'}
+          sortKey={'AUTHOR'}
           onSort={onSort}
           activeSortKey={sortKey}>
           Author  
