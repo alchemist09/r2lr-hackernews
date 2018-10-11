@@ -62,22 +62,7 @@ class App extends Component {
 
   setSearchTopstories(result) {
     const { hits, page } = result;
-    this.setState(prevState => {
-      const { searchKey, results } = prevState;
-      const oldHits = results && results[searchKey] ? results[searchKey].hits : [];
-      const updatedHits = [
-        ...oldHits,
-        ...hits
-      ];
-
-      return {
-        results: {
-          ...results,
-          [searchKey]: { hits: updatedHits, page }
-        },
-        isLoading: false
-      };
-    });
+    this.setState(updateSearchTopStoriesState(hits, page));
   }
 
   fetchSearchTopstories(searchTerm, page) {
@@ -160,6 +145,22 @@ const withLoading = (Component) => ({isLoading, ...rest}) =>
   isLoading ? <Loading /> : <Component {...rest} />
 
 const ButtonWihLoading = withLoading(Button);
+
+const updateSearchTopStoriesState = (hits, page) => prevState => {
+  const { searchKey, results } = prevState;
+  const oldHits = results && results[searchKey] ? results[searchKey].hits : [];
+  const updatedHits = [
+    ...oldHits,
+    ...hits
+  ];
+  return {
+    results: {
+      ...results,
+      [searchKey]: { hits: updatedHits, page }
+    },
+    isLoading: false
+  };
+}
 
 
 export default App;
